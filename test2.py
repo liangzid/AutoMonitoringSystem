@@ -19,9 +19,12 @@ class FileDialogdemo(QWidget):
         layout.addWidget(self.button1)
 
 
-        self.le=QLabel(self)
-        self.le.resize(500,500)
-        self.le.move(100,100)
+        self.label_showImage=QLabel(self)
+        self.label_showImage.resize(500,500)
+        self.label_showImage.move(100,100)
+
+        self.button2=QPushButton('读取需要进行处理的原视频呢！')
+        self.button2.clicked.connect(self.getOriginalVideo)
 
         self.setLayout(layout)
 
@@ -36,7 +39,15 @@ class FileDialogdemo(QWidget):
 
     def getImage(self):
         fname,_=QFileDialog.getOpenFileName(self,'Open file','./','Image files (*.* )')
-        self.le.setPixmap(QPixmap(fname))
+        self.label_showImage.setPixmap(QPixmap(fname))
+
+    def getOriginalVideo(self):
+        fname,_=QFileDialog.getOpenFileName(self,'Open file','./','Video files (*.* )')
+
+
+
+
+
 
 app=QApplication(sys.argv)
 ex=FileDialogdemo()
