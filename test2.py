@@ -7,7 +7,8 @@ class FileDialogdemo(QWidget):
     def __init__(self,parent=None):
         super(FileDialogdemo,self).__init__(parent)
 
-        self.resize(500,500)
+
+        self.QuanPing() # 设置打开时处于全屏状态
 
 
 
@@ -17,11 +18,21 @@ class FileDialogdemo(QWidget):
         self.button1.clicked.connect(self.getImage)
         layout.addWidget(self.button1)
 
-        self.le=QLabel("")
+
+        self.le=QLabel(self)
+        self.le.resize(500,500)
+        self.le.move(100,100)
 
         self.setLayout(layout)
 
         self.setWindowTitle('智能监控系统')
+
+
+    def QuanPing(self):
+        screen=QDesktopWidget().screenGeometry()
+        self.resize(screen.width(),screen.height())
+
+
 
     def getImage(self):
         fname,_=QFileDialog.getOpenFileName(self,'Open file','./','Image files (*.* )')
