@@ -11,7 +11,8 @@ class FileDialogdemo(QWidget):
     def __init__(self, parent=None):
         super(FileDialogdemo, self).__init__(parent)
 
-        self.setFixedSize(1152, 840)
+
+        self.setFixedSize(1152, 840) # 建立的是界面的大小？
         self.mainwidget = QWidget()  # 主控件
         self.mainwidget_layout = QGridLayout()
         self.mainwidget.setLayout(self.mainwidget_layout)
@@ -58,18 +59,21 @@ class FileDialogdemo(QWidget):
         self.personImageButton.setStyleSheet(
             '''QPushButton{background:#00B2EE;border-radius:5px;}QPushButton:hover{background:#1C86EE;}''')
 
+        # 读取视频
         self.readButton = QPushButton('读取视频')
         self.readButton.setObjectName('rightButton')
         self.readButton.clicked.connect(self.getOriginalVideo)
         self.readButton.setStyleSheet(
             '''QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}''')
 
+        # 停止按钮
         self.stopButton = QPushButton('停止')
         self.stopButton.clicked.connect(self.closeVideo)
         self.stopButton.setObjectName('rightButton')
         self.stopButton.setStyleSheet(
             '''QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:red;}''')
 
+        # 关闭程序的按钮
         self.closeButton = QPushButton('关闭程序')
         self.closeButton.setObjectName('rightButton')
         self.closeButton.setFixedSize(200, 50)
@@ -77,14 +81,18 @@ class FileDialogdemo(QWidget):
             '''QPushButton{background:#F76677;border-radius:5px;}QPushButton:hover{background:red;}''')
         self.closeButton.clicked.connect(self.close)
 
+        # 显示图像的label
         self.goalPic = QLabel(self)
         self.goalPic.setStyleSheet(
             "QLabel{border: 3px solid #6495ED;border-radius:10px;color:black;font-size:20px;}")
         self.goalPic.setText('         目标行人图像')
-        #视频显示控件
+
+        # 显示视频的label
         self.outputView = QLabel(self)
         self.outputView.setStyleSheet(
             "QLabel{border: 3px solid #6495ED;border-radius:10px;}")
+
+
         self.text1 = QLabel(self)
 
         # 设置一个变量，来决定是使用相机模式还是使用别的模式.我们仅仅需要获得这个状态。
@@ -119,11 +127,12 @@ class FileDialogdemo(QWidget):
         #管理摄像头开闭的变量
         self.running=False
 
+    # 设置界面全屏的，如果需要的话可以使用
     def QuanPing(self):
         screen = QDesktopWidget().screenGeometry()
         self.resize(screen.width(), screen.height())
 
-    def closeVideo(self):   # 管理视频有没有结束的，当按下clos按钮的时候，视频就应该结束了。
+    def closeVideo(self):   # 管理视频有没有结束的，当按下close按钮的时候，视频就应该结束了。
         self.stopEvent.set()
 
     def getImage(self):
@@ -133,6 +142,7 @@ class FileDialogdemo(QWidget):
         self.goalPic.setScaledContents(1)
         self.goalPic.setFixedSize(x)
 
+    # 读取原始图片的
     def getOriginalVideo(self):
         #这里是否需要对新的线程进行一个处理，来清空close按钮带来的影响
         # self.stopEvent.clear()
@@ -171,6 +181,7 @@ class FileDialogdemo(QWidget):
                 self.outputView.clear()
                 break
 
+    # 就是布尔型开关
     def checkbuttonChange(self):
         if self.checkbutton.checkState() == True:
             self.checkbutton.setChecked(False)
