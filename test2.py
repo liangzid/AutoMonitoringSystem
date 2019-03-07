@@ -156,8 +156,7 @@ class FileDialogdemo(QWidget):
                 print('读取失败了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊\n')
                 break
             img=QImage(frame_new[:],frame_new.shape[1],frame_new.shape[0],frame_new.shape[1]*3,QImage.Format_RGB888)
-
-            self.label_showOriginalVideo.setPixmap(QPixmap(QPixmap.fromImage(img)))
+            self.outputView.setPixmap(QPixmap(QPixmap.fromImage(img)))
 
             # 根据播放不同的东西来确定FPS值
             if self.checkbutton.checkState() == 2:
@@ -169,7 +168,7 @@ class FileDialogdemo(QWidget):
             if self.stopEvent.is_set():
                 print('停止按钮已按下，线程已终止。\n')
                 self.stopEvent.clear()
-                self.label_showOriginalVideo.clear()
+                self.outputView.clear()
                 break
 
     def checkbuttonChange(self):
