@@ -8,6 +8,7 @@ import threading
 from cv2 import VideoCapture, cvtColor,COLOR_BGR2RGB,waitKey
 import cv2
 
+
 class FileDialogdemo(QWidget):
     def __init__(self,parent=None):
         super(FileDialogdemo,self).__init__(parent)
@@ -26,28 +27,22 @@ class FileDialogdemo(QWidget):
         self.label_showImage.resize(500,500)
         self.label_showImage.move(100,100)
 
-
-        #设置读取处理之前的视频的按钮
+        # 设置读取处理之前的视频的按钮
         self.button2=QPushButton('读取需要进行处理的原视频呢！')
         self.button2.clicked.connect(self.getOriginalVideo)
         layout.addWidget(self.button2)
 
-        #关闭按钮，用于关闭视频播放
+        # 关闭按钮，用于关闭视频播放
         self.closebutton=QPushButton('关闭操作')
         self.closebutton.clicked.connect(self.closeVideo)
         layout.addWidget(self.closebutton)
 
-
-
-        #QLabel变量设置展示的原始视频的具体特征
+        # QLabel变量设置展示的原始视频的具体特征
         self.label_showOriginalVideo=QLabel(self)
-        self.label_showOriginalVideo.resize(100,100)
+        self.label_showOriginalVideo.resize(500,500)
         self.label_showOriginalVideo.move(600,100)
 
-
-
-
-        #设置一个变量，来决定是使用相机模式还是使用别的模式.我们仅仅需要获得这个状态。
+        # 设置一个变量，来决定是使用相机模式还是使用别的模式.我们仅仅需要获得这个状态。
         self.checkbutton=QCheckBox('直接使用摄像头')
         self.checkbutton.setChecked(True)#默认直接使用摄像头
         self.checkbutton.stateChanged.connect(self.checkbuttonChange)
@@ -66,7 +61,7 @@ class FileDialogdemo(QWidget):
         screen=QDesktopWidget().screenGeometry()
         self.resize(screen.width(),screen.height())
 
-    def closeVideo(self):   #管理视频有没有结束的，当按下clos按钮的时候，视频就应该结束了。
+    def closeVideo(self):   # 管理视频有没有结束的，当按下clos按钮的时候，视频就应该结束了。
         self.stopEvent.set()
 
 
@@ -90,13 +85,13 @@ class FileDialogdemo(QWidget):
         while self.cap.isOpened():
             success,frame=self.cap.read()
             if success:
-                frame_new=cvtColor(frame,cv2.COLOR_RGB2BGR)
+                frame_new=cvtColor(frame,cv2.COLOR_BGR2RGB)
             else:
                 print('读取失败了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊\n')
                 break
-            img=QImage(frame_new.data,frame_new.shape[1],frame_new.shape[0],QImage.Format_RGB888)#可能这一行的问题吧
+            img=QImage(frame_new[:],frame_new.shape[1],frame_new.shape[0],frame_new.shape[1]*3,QImage.Format_RGB888)
 
-            self.label_showOriginalVideo=QPixmap(QPixmap.fromImage(img))
+            self.label_showOriginalVideo.setPixmap(QPixmap(QPixmap.fromImage(img)))
 
             #根据播放不同的东西来确定FPS值
             if self.checkbutton.checkState()==2:
@@ -107,7 +102,7 @@ class FileDialogdemo(QWidget):
             #如果按了停止按钮则终止一切操作
             if self.stopEvent.is_set():
                 self.stopEvent.clear()
-                # self.label_showOriginalVideo.clear()
+                self.label_showOriginalVideo.clear()
                 break
 
 
