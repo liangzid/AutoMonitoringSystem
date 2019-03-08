@@ -1,3 +1,17 @@
+'''
+使用方式：
+    将ui.py runForUI.py放入person_search主文件加下，运行
+    ```python
+    python ui.py
+    ```
+    即可。
+    如果在使用pyinstaller编译后所占空间过大，可以考虑多使用一些from import格式。
+    没有进行深度优化。每一帧都识别。
+
+    liangzid, Diater
+    2019.3.8
+'''
+
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -6,6 +20,7 @@ import threading
 from cv2 import VideoCapture, cvtColor,COLOR_BGR2RGB,waitKey,imread
 # import cv2 # 不直接导入是为了减少使用pyinstall转化为可执行文件时的编译体积（或者说所占的硬件空间）
 
+from runForUI import runForUI
 
 class FileDialogdemo(QWidget):
     def __init__(self, parent=None):
@@ -169,11 +184,9 @@ class FileDialogdemo(QWidget):
             if self.originImage==None:
                 imgAfterDetect=frame
             else:
-# ===============================================================================
                 # 对每一帧进行识别，并导出结果
-                # imgAfterDetect=function(frame,self.originalImage)
-                imgAfterDetect=frame
-# ===============================================================================
+                imgAfterDetect=runForUI(frame,self.originalImage,usegpu=0)#如果不使用gpu，则为-1
+                #imgAfterDetect=frame
 
             if success:
                 frame_new=cvtColor(imgAfterDetect,COLOR_BGR2RGB)
